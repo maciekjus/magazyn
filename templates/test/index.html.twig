@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+<style type="text/css">
+	.left-nav		{
+						min-height: 100vh;
+						background-color: #F1F5DB;
+					}
+	.content-cont	{
+						border-right: 4px solid #D8DCC5;
+						border-left: 4px solid #D8DCC5;
+						padding: 30px 20px;
+					}
+</style>
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+	<a name="container"></a>
+	<div class="row">
+		<ul class="nav flex-column col-sm-3 left-nav">
+			<li class="nav-item">
+		    	<a class="nav-link" href="{{ path('testhomepage', {'_fragment': 'content'}) }}">Home</a>
+		  	</li>
+		  	<li class="nav-item">
+		    	<a class="nav-link" href="{{ path('testiupload', {'_fragment': 'content'}) }}">File upload test</a>
+		  	</li>
+		</ul>
+		<div class="col-sm-9 content-cont">
+			{% block content %}
+				{{ dump(params) }}
+			{% endblock %}
+		</div>
+	</div>
+</div>
+
+{% endblock %}

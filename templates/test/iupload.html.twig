@@ -1,0 +1,25 @@
+{% extends 'test/index.html.twig' %}
+
+{% block content %}
+
+
+{{ dump(file) }}
+
+
+{{ form(form) }}
+
+{% for file in files %}
+	<div style="border: 1px solid #aba9a6; float: left; clear: both; width: 100%; margin-bottom: 6px; padding: 4px; ">
+		<img src="{{ upload_directory }}/{{ file.name }}" style="width: 200px; height: 120px; object-fit: contain; background-color: #dadbd5; border: 3px solid #dadbd5; float: left; margin-right: 10px; ">
+		<div style="float: left; font-size: 9pt;">
+			<p><font style="color: #9c9995; font-style: italic; ">Dodano:</font> {{ file.time|date("d.m.Y H:i:s") }}</p>
+			<p><font style="color: #9c9995; font-style: italic; ">Nazwa pliku:</font> {{ file.name }}</p>
+			<p><font style="color: #9c9995; font-style: italic; ">Opis:</font> {{ file.description }}</p>
+			<p><a href="{{ path('deletefile', {id: file.id}) }}">Usuń</a></p>
+		</div>
+	</div>
+
+{% endfor %}
+
+
+{% endblock %}
