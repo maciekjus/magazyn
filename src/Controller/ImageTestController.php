@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\Type\ImageFileType;
 use App\Entity\File;
+use App\Entity\Location;
 use Symfony\Component\HttpFoundation\Request;
 use Intervention\Image\ImageManager;
 
@@ -36,6 +37,12 @@ class ImageTestController extends AbstractController
 	    if ($form->isSubmitted() && $form->isValid()) {
 	        $file = $form->getData();
 	        $file->setTime(new \DateTime('now', new \DateTimeZone('+0200')));
+            if ($locationID) {
+                $location = $this->getDoctrine()
+                    ->getRepository(Location::class)
+                    ->find($locationID);
+                $file->setLocation($location);
+            }
 	        $imageFile = $form->get('name')->getData();
 	        if ($imageFile) {
 	        	$originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME).'.'.$imageFile->guessExtension();
@@ -57,14 +64,27 @@ class ImageTestController extends AbstractController
 	        $entityManager = $this->getDoctrine()->getManager();
 	        $entityManager->persist($file);
 	        $entityManager->flush();
-	        return $this->redirectToRoute('testiupload');
+            if ($locationID) {
+                return $this->redirectToRoute('testiupload', ['locationID' => $locationID]);
+            } else {
+	           return $this->redirectToRoute('testiupload');
+            }
 	    }
 
 	    // odczyt plikow po uploadzie
-	    $files = $this->getDoctrine()
-        	->getRepository(File::class)
-        	->findAll();
+        if ($locationID) {
+            $location = $this->getDoctrine()
+                    ->getRepository(Location::class)
+                    ->find($locationID);
+            $files = $location->getFiles();
+        } else {
+            $files = $this->getDoctrine()
+                    ->getRepository(File::class)
+                    ->findAll();
+        }
+
         $uploadDirectory = explode('public', $this->getParameter('upload_image_directory'))[1];
+	    
 
         return $this->render('test/iupload.html.twig', [
             'form' => $form->createView(),

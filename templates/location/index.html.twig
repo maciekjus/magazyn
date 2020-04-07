@@ -1,0 +1,18 @@
+{% extends 'test/index.html.twig' %}
+
+{% block title %}Lokacja{% endblock %}
+
+{% block content %}
+
+{{ form(form) }}
+
+{% for location in locations %}
+	<p style="border-left: 3px solid green; padding-left: 10px; font-size: 9pt; ">
+		Nr: {{ location.number }}<br>
+		Dodano: {{ location.time|date("d.m.Y H:i:s") }}<br>
+		Nazwa: {{ location.name }}<br>
+		Opis: {{ location.time|date("d.m.Y H:i:s") }}<br>
+	</p>
+{% endfor %}
+
+{% endblock %}

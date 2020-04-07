@@ -31,6 +31,11 @@ class File
      */
     private $time;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="files")
+     */
+    private $location;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,6 +73,18 @@ class File
     public function setTime(?\DateTimeInterface $time): self
     {
         $this->time = $time;
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): self
+    {
+        $this->location = $location;
 
         return $this;
     }
